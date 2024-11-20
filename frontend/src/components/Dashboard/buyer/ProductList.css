@@ -20,7 +20,6 @@
 }
 
 @keyframes shake {
-    /* Same as vibrate animation */
     0% { transform: translate(1px, 1px) rotate(0deg); }
     10% { transform: translate(-1px, -2px) rotate(-1deg); }
     20% { transform: translate(-3px, 0px) rotate(1deg); }
@@ -39,9 +38,14 @@
     50% { transform: translateY(-10px); }
 }
 
-@keyframes slideIn {
-    from { transform: translateY(100%); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
 }
 
 /* Container and Grid Styles */
@@ -70,6 +74,8 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s ease;
 }
 
 .modal-content {
@@ -80,14 +86,11 @@
     max-width: 500px;
     position: relative;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-}
-
-.modal-animation {
     animation: fadeIn 0.3s ease;
 }
 
-.slide-in {
-    animation: slideIn 0.4s ease;
+.fade-out {
+    animation: fadeOut 0.3s ease;
 }
 
 .modal-close {
@@ -103,6 +106,39 @@
 
 .modal-close:hover {
     color: #ff0000;
+}
+
+/* Pincode Input Styles */
+.pincode-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.pincode-input-container input {
+    flex-grow: 1;
+    padding-right: 30px;
+}
+
+.pincode-validation-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.pincode-validation-icon.success {
+    color: #28a745;
+}
+
+.pincode-validation-icon.error {
+    color: #dc3545;
+}
+
+.pincode-error {
+    color: #dc3545;
+    font-size: 0.8em;
+    margin-top: 5px;
 }
 
 /* Modal Form Styles */
