@@ -12,6 +12,7 @@ A comprehensive e-commerce platform built with Go (backend) and React (frontend)
 - [API Endpoints](#api-endpoints)
 - [Authentication & Authorization](#authentication--authorization)
 - [Setup & Installation](#setup--installation)
+- [Project Images](#project--images)
 
 ## ✨ Features
 
@@ -197,6 +198,29 @@ cd frontend
 npm install
 npm start
 ```
+
+## 📷 Screenshots
+
+### Admin Dashboard
+![Admin Dashboard](Project-Images/Admin_dashboard_productlist.png)
+
+![Admin Dashboard](Project-Images/Admin_create_product.png)
+
+![Admin Dashboard](Project-Images/Admin_dashboard_orderlist.png)
+
+
+### Seller Dashboard
+![Seller Dashboard](Project-Images/seller_dashboard.png)
+
+## Buyer Dashboard
+![Buyer Dashboard](Project-Images/Buyer_dashboard.png)
+
+![Buyer Dashboard](Project-Images/Place_order.png)
+
+![Buyer Dashboard](Project-Images/Buyer_dashboard_myorders.png)
+
+
+
 
 ## 🤝 Contributing
 
