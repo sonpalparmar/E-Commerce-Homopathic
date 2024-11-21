@@ -11,7 +11,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 15px;
-    background: linear-gradient(135deg, #007bff, #00bfff);
+    background: linear-gradient(135deg, #537b2f, #537b2f);
     border-radius: 10px;
     color: white;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -33,6 +33,7 @@
     margin: 0;
     font-size: 1.8em;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    /* text-shadow: 2px 2px 4px #537b2f; */
   }
   
   .dashboard-actions {
@@ -81,7 +82,7 @@
   
   .dashboard-nav button:hover,
   .dashboard-nav button.active {
-    background-color: #007bff;
+    background-color: #537b2f;
     color: white;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   }

@@ -1,4 +1,3 @@
-// internal/handlers/user.go
 package handlers
 
 import (
@@ -79,7 +78,6 @@ func (h *UserHandler) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"token": token, "user_type": user.UserType})
 }
 
-// Add to internal/handlers/user.go
 func (h *UserHandler) GetProfile(c *gin.Context) {
 	userID, _ := c.Get("userID")
 
@@ -89,7 +87,6 @@ func (h *UserHandler) GetProfile(c *gin.Context) {
 		return
 	}
 
-	// Don't send password in response
 	user.Password = ""
 	c.JSON(http.StatusOK, user)
 }
@@ -110,7 +107,6 @@ func (h *UserHandler) UpdateProfile(c *gin.Context) {
 		return
 	}
 
-	// Update only allowed fields
 	user.Name = updateData.Name
 	user.Email = updateData.Email
 	user.Phone = updateData.Phone
@@ -122,6 +118,6 @@ func (h *UserHandler) UpdateProfile(c *gin.Context) {
 		return
 	}
 
-	user.Password = "" // Don't send password in response
+	user.Password = ""
 	c.JSON(http.StatusOK, user)
 }
