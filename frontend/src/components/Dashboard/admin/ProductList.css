@@ -56,6 +56,16 @@
     color: #666;
 }
 
+.success-message {
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    animation: fadeIn 0.3s ease-out;
+}
+
 .action-buttons {
     display: flex;
     gap: 10px;
@@ -63,7 +73,9 @@
 }
 
 .edit-btn, 
-.delete-btn {
+.delete-btn,
+.save-btn,
+.cancel-btn {
     padding: 6px 12px;
     border: none;
     border-radius: 4px;
@@ -81,10 +93,87 @@
     color: white;
 }
 
+.save-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+.cancel-btn {
+    background-color: #6c757d;
+    color: white;
+}
+
 .edit-btn:hover {
     background-color: #218838;
 }
 
 .delete-btn:hover {
     background-color: #c82333;
+}
+
+.save-btn:hover {
+    background-color: #0056b3;
+}
+
+.cancel-btn:hover {
+    background-color: #5a6268;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-group textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
 }

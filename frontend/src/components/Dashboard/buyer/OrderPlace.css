@@ -1,0 +1,171 @@
+.order-place-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+  }
+  
+  .order-place-content {
+    background-color: white;
+    border-radius: 12px;
+    width: 400px;
+    padding: 25px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.3s ease;
+  }
+  
+  .order-icon {
+    margin-right: 10px;
+    color: #007bff;
+  }
+  
+  .order-place-content h2 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .order-summary {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .order-summary p {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .order-summary p:last-child {
+    border-bottom: none;
+  }
+  
+  .order-summary p span:first-child {
+    color: #666;
+    font-weight: 500;
+  }
+  
+  .order-summary p span:last-child {
+    font-weight: bold;
+    color: #007bff;
+  }
+  
+  .pincode-input {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+  
+  .pincode-input label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .pincode-icon {
+    margin-right: 10px;
+    color: #28a745;
+  }
+  
+  .pincode-input input {
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 16px;
+  }
+  
+  .pincode-input input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+  
+  .order-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+  }
+  
+  .cancel-button, 
+  .confirm-button {
+    flex-grow: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+  }
+  
+  .cancel-button {
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  .cancel-button:hover {
+    background-color: #545b62;
+  }
+  
+  .confirm-button {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .confirm-button:hover {
+    background-color: #218838;
+  }
+  
+  .confirm-button:disabled,
+  .cancel-button:disabled {
+    background-color: #ced4da;
+    cursor: not-allowed;
+  }
+  
+  .error-message {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    text-align: center;
+    animation: shake 0.5s;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideUp {
+    from { 
+      opacity: 0; 
+      transform: translateY(20px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+  }
+  
+  @keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    /* ... rest of the shake animation ... */
+  }

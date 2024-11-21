@@ -30,7 +30,7 @@ func main() {
 
 	config := cors.DefaultConfig()
 	config.AllowAllOrigins = true
-	config.AllowMethods = []string{"POST", "GET", "PUT", "OPTIONS"}
+	config.AllowMethods = []string{"POST", "GET", "PUT", "OPTIONS", "DELETE"}
 	config.AllowHeaders = []string{"Origin", "Content-Type", "Authorization", "Accept", "User-Agent", "Cache-Control", "Pragma"}
 	config.ExposeHeaders = []string{"Content-Length"}
 	config.AllowCredentials = true

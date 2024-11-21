@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaPlus, FaMinus, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
-import ProductCard from './ProductCard';
+import { 
+  FaShoppingCart, 
+  FaBoxOpen, 
+  FaTag, 
+  FaPlus, 
+  FaMinus 
+} from 'react-icons/fa';
+import OrderPlace from './OrderPlace';
 import './ProductList.css';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [orderQuantity, setOrderQuantity] = useState(1);
-  const [pincode, setPincode] = useState('');
-  const [pincodeError, setPincodeError] = useState('');
-  const [showOrderModal, setShowOrderModal] = useState(false);
-  const [orderSuccess, setOrderSuccess] = useState(false);
-  const [modalAnimation, setModalAnimation] = useState('');
-  const [isModalClosing, setIsModalClosing] = useState(false);
+  const [cart, setCart] = useState({});
+  const [selectedProductForOrder, setSelectedProductForOrder] = useState(null);
+
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -24,100 +25,127 @@ const ProductList = () => {
     setLoading(true);
     try {
       const response = await axios.get('http://localhost:8080/api/v1/products');
-      setProducts(response.data.products);
+      
+      // Log the entire response for debugging
+      console.log('Full API Response:', response.data);
+
+      // Ensure we're handling the correct data structure
+      const productsList = response.data?.products || [];
+      
+      // Additional logging
+      console.log('Parsed Products:', productsList);
+      
+      setProducts(productsList);
     } catch (err) {
-      setError('😱 Oops! Failed to load products. Please try again later.');
+      setError('😱 Failed to load products. Please try again later.');
       console.error('Error fetching products:', err);
+      setProducts([]);
     }
     setLoading(false);
   };
 
-  const validatePincode = (code) => {
-    // Indian pincode validation: 6 digits
-    const pincodeRegex = /^[1-9][0-9]{5}$/;
-    return pincodeRegex.test(code);
-  };
-
-  const handlePincodeChange = (e) => {
-    const value = e.target.value.replace(/\D/g, '').slice(0, 6);
-    setPincode(value);
-    
-    if (value.length === 6) {
-      if (validatePincode(value)) {
-        setPincodeError('');
-      } else {
-        setPincodeError('Invalid pincode format');
-      }
-    } else if (value.length > 0) {
-      setPincodeError('Pincode must be 6 digits');
-    } else {
-      setPincodeError('');
-    }
-  };
-
-  const handleBuyClick = (product, quantity) => {
-    setSelectedProduct(product);
-    setOrderQuantity(quantity);
-    setPincode('');
-    setPincodeError('');
-    setModalAnimation('slide-in');
-    setShowOrderModal(true);
-  };
-
-  const handleCreateOrder = async () => {
-    if (!validatePincode(pincode)) {
-      setPincodeError('Please enter a valid 6-digit pincode');
+  const handleAddToCart = (product) => {
+    if (!product || !product.ID) {
+      console.error('Invalid product:', product);
       return;
     }
 
-    try {
-      const orderData = {
-        product_id: selectedProduct.id,
-        product_name: selectedProduct.name,
-        quantity: parseInt(orderQuantity),
-        price: selectedProduct.price,
-        pincode: pincode,
+    console.log('Current cart:', cart);
+    console.log('Product being added:', product);
+
+    setCart(prevCart => {
+      const currentQuantity = prevCart[product.ID] || 0;
+      
+      if (currentQuantity + 1 > product.stock) {
+        console.warn(`Cannot add more than available stock (${product.stock})`);
+        return prevCart;
+      }
+
+      return {
+        ...prevCart,
+        [product.ID]: currentQuantity + 1
       };
-
-      await axios.post('http://localhost:8080/api/v1/orders', orderData);
-      setShowOrderModal(false);
-      setOrderSuccess(true);
-      setModalAnimation('');
-
-      setTimeout(() => setOrderSuccess(false), 3000);
-    } catch (err) {
-      setError('🚫 Order failed. Please try again.');
-      console.error('Error creating order:', err);
-    }
+    });
   };
 
-  const handleCloseModal = () => {
-    setIsModalClosing(true);
-    setTimeout(() => {
-      setShowOrderModal(false);
-      setIsModalClosing(false);
-    }, 300);
+  const handleRemoveFromCart = (product) => {
+    setCart(prevCart => {
+      const currentQuantity = prevCart[product.ID] || 0;
+      if (currentQuantity > 1) {
+        return {
+          ...prevCart,
+          [product.ID]: currentQuantity - 1
+        };
+      }
+      const { [product.ID]: removed, ...remainingCart } = prevCart;
+      return remainingCart;
+    });
   };
 
-  const Modal = ({ children }) => {
-    if (!showOrderModal) return null;
+  const handleOrderModalOpen = (product) => {
+    setSelectedProductForOrder(product);
+  };
+
+  const handleOrderModalClose = () => {
+    setSelectedProductForOrder(null);
+  };
+
+  const handleOrderPlaced = (orderResult) => {
+    alert(orderResult.message);
+    
+    setCart(prevCart => {
+      const { [selectedProductForOrder.ID]: removed, ...remainingCart } = prevCart;
+      return remainingCart;
+    });
+
+    setSelectedProductForOrder(null);
+  };
+
+  const ProductCard = ({ product }) => {
+    const cartQuantity = cart[product.ID] || 0;
 
     return (
-      <div 
-        className={`modal-overlay ${isModalClosing ? 'fade-out' : ''}`}
-        onClick={handleCloseModal}
-      >
-        <div 
-          className={`modal-content ${isModalClosing ? 'fade-out' : ''}`}
-          onClick={(e) => e.stopPropagation()}
-        >
+      <div className="product-card pulse-hover">
+        <div className="product-header">
+          <h3>
+            <FaBoxOpen className="title-icon" /> 
+            {product.name}
+          </h3>
+          <span className="product-price">
+            <FaTag className="price-icon" /> 
+            ₹{product.price.toFixed(2)}
+          </span>
+        </div>
+        <div className="product-details">
+          <p>{product.description}</p>
+          <p>
+            <span>Stock:</span>
+            <span>{product.stock} units</span>
+          </p>
+        </div>
+        <div className="product-actions">
+          <div className="cart-control">
+            <button 
+              onClick={() => handleRemoveFromCart(product)}
+              disabled={cartQuantity === 0}
+            >
+              <FaMinus />
+            </button>
+            <span>{cartQuantity}</span>
+            <button 
+              onClick={() => handleAddToCart(product)}
+              disabled={cartQuantity >= product.stock}
+            >
+              <FaPlus />
+            </button>
+          </div>
           <button 
-            className="modal-close" 
-            onClick={handleCloseModal}
+            className="order-button"
+            onClick={() => handleOrderModalOpen(product)}
+            disabled={cartQuantity === 0}
           >
-            ×
+            <FaShoppingCart /> Place Order
           </button>
-          {children}
         </div>
       </div>
     );
@@ -131,100 +159,33 @@ const ProductList = () => {
         </div>
       )}
 
-      {orderSuccess && (
-        <div className="success-message bounce">
-          🎉 Order placed successfully! 🚀
-        </div>
-      )}
-
       {loading ? (
         <div className="loading-indicator">
-          Loading... 🌀
+          Loading Products... 🌀
         </div>
       ) : (
-        <div className="product-grid">
-          {products.map((product) => (
-            <ProductCard
-              key={product.ID}
-              product={product}
-              onBuyClick={handleBuyClick}
-            />
-          ))}
+        <div className="products-container">
+          {products.length === 0 ? (
+            <div className="no-products">
+              <FaBoxOpen className="empty-icon" />
+              <p>No products available 🛍️</p>
+            </div>
+          ) : (
+            products.map((product) => (
+              <ProductCard key={product.ID} product={product} />
+            ))
+          )}
         </div>
       )}
 
-      <Modal>
-        <h2>📦 Place Order</h2>
-        <div className="modal-form">
-          <div className="form-group">
-            <label>Quantity:</label>
-            <div className="quantity-input">
-              <button 
-                onClick={() => setOrderQuantity(Math.max(1, orderQuantity - 1))}
-              >
-                <FaMinus />
-              </button>
-              <input
-                type="number"
-                value={orderQuantity}
-                onChange={(e) => setOrderQuantity(parseInt(e.target.value))}
-                min="1"
-                max={selectedProduct?.stock}
-              />
-              <button 
-                onClick={() => setOrderQuantity(Math.min(selectedProduct?.stock, orderQuantity + 1))}
-              >
-                <FaPlus />
-              </button>
-            </div>
-          </div>
-          
-          <div className="form-group">
-            <label>🏠 Delivery Pincode:</label>
-            <div className="pincode-input-container">
-              <input
-                type="text"
-                value={pincode}
-                onChange={handlePincodeChange}
-                placeholder="Enter delivery pincode"
-                maxLength="6"
-              />
-              {pincode && (
-                pincodeError ? (
-                  <FaTimesCircle className="pincode-validation-icon error" />
-                ) : (
-                  <FaCheckCircle className="pincode-validation-icon success" />
-                )
-              )}
-            </div>
-            {pincodeError && (
-              <p className="pincode-error">{pincodeError}</p>
-            )}
-          </div>
-
-          {selectedProduct && (
-            <div className="total-amount">
-              <p>💰 Total Amount: ₹{selectedProduct.price * orderQuantity}</p>
-            </div>
-          )}
-
-          <div className="modal-actions">
-            <button 
-              className="cancel-button"
-              onClick={handleCloseModal}
-            >
-              Cancel
-            </button>
-            <button 
-              className="confirm-button"
-              onClick={handleCreateOrder}
-              disabled={!validatePincode(pincode)}
-            >
-              Confirm Order
-            </button>
-          </div>
-        </div>
-      </Modal>
+      {selectedProductForOrder && (
+        <OrderPlace 
+          product={selectedProductForOrder}
+          quantity={cart[selectedProductForOrder.ID] || 1}
+          onOrderPlaced={handleOrderPlaced}
+          onCancel={handleOrderModalClose}
+        />
+      )}
     </div>
   );
 };

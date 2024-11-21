@@ -28,7 +28,7 @@ const ProductCreate = () => {
     try {
       const response = await axios.post('http://localhost:8080/api/v1/admin/products', {
         name: productData.name,
-        discription: productData.description, // Note: typo matches backend
+        description: productData.description, // Note: typo matches backend
         price: parseFloat(productData.price),
         stock: parseInt(productData.stock)
       });

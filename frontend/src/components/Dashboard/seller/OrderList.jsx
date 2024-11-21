@@ -29,9 +29,15 @@ const OrdersList = () => {
 
   const handleOrderResponse = async (orderId, action) => {
     try {
+      // Check if rejecting without a reason
+      if (action === 'reject' && (!rejectReason[orderId] || rejectReason[orderId].trim() === '')) {
+        alert('Please provide a reject reason before rejecting the order.');
+        return;
+      }
+
       const payload = {
-        accept: action === 'accept',
-        reject_reason: action === 'reject' ? (rejectReason[orderId] || 'Order rejected by seller') : ''
+        Accept: action === 'accept',  // Changed to capital 'Accept'
+        RejectReason: action === 'reject' ? rejectReason[orderId] : ''  // Changed to capital 'RejectReason'
       };
 
       await axios.post(`http://localhost:8080/api/v1/seller/orders/${orderId}/respond`, 
@@ -48,10 +54,19 @@ const OrdersList = () => {
           ? { 
               ...order, 
               status: action === 'accept' ? 'accepted' : 'rejected',
-              reject_reason: action === 'reject' ? payload.reject_reason : ''
+              reject_reason: action === 'reject' ? payload.RejectReason : ''
             } 
           : order
       ));
+
+      // Clear the reject reason after successful rejection
+      if (action === 'reject') {
+        setRejectReason(prev => {
+          const updated = { ...prev };
+          delete updated[orderId];
+          return updated;
+        });
+      }
     } catch (err) {
       alert(`Failed to ${action} order: ${err.response?.data?.error || 'Unknown error'}`);
       console.error(err);
@@ -103,33 +118,38 @@ const OrdersList = () => {
                   <span className="detail-label">Quantity:</span>
                   <span>{order.quantity}</span>
                 </div>
+                {order.reject_reason === '' ? <></> : 
+                <div className="order-detail">
+                  <span className="detail-label">Reason:</span>
+                  <span>{order.reject_reason}</span>
+                </div>
+                }
               </div>
               
               {order.status === 'pending' && (
-                <div className="order-actions">
-                  <button 
-                    onClick={() => handleOrderResponse(order.ID, 'accept')}
-                    className="action-button accept"
-                  >
-                    ✅ Accept
-                  </button>
-                  <button 
-                    onClick={() => handleOrderResponse(order.ID, 'reject')}
-                    className="action-button reject"
-                  >
-                    ❌ Reject
-                  </button>
-                </div>
-              )}
-              
-              {order.status === 'pending' && (
-                <input 
-                  type="text"
-                  placeholder="Reject reason (optional)"
-                  className="reject-reason-input"
-                  value={rejectReason[order.ID] || ''}
-                  onChange={(e) => handleRejectReasonChange(order.ID, e.target.value)}
-                />
+                <>
+                  <div className="order-actions">
+                    <button 
+                      onClick={() => handleOrderResponse(order.ID, 'accept')}
+                      className="action-button accept"
+                    >
+                      ✅ Accept
+                    </button>
+                    <button 
+                      onClick={() => handleOrderResponse(order.ID, 'reject')}
+                      className="action-button reject"
+                    >
+                      ❌ Reject
+                    </button>
+                  </div>
+                  <input 
+                    type="text"
+                    placeholder="Reject reason (required)"
+                    className="reject-reason-input"
+                    value={rejectReason[order.ID] || ''}
+                    onChange={(e) => handleRejectReasonChange(order.ID, e.target.value)}
+                  />
+                </>
               )}
             </div>
           ))}

@@ -1,216 +1,175 @@
-/* Animation Keyframes */
 @keyframes pulse {
     0% { transform: scale(1); }
     50% { transform: scale(1.02); }
     100% { transform: scale(1); }
-}
-
-@keyframes vibrate {
-    0% { transform: translate(1px, 1px) rotate(0deg); }
-    10% { transform: translate(-1px, -2px) rotate(-1deg); }
-    20% { transform: translate(-3px, 0px) rotate(1deg); }
-    30% { transform: translate(3px, 2px) rotate(0deg); }
-    40% { transform: translate(1px, -1px) rotate(1deg); }
-    50% { transform: translate(-1px, 2px) rotate(-1deg); }
-    60% { transform: translate(-3px, 1px) rotate(0deg); }
-    70% { transform: translate(3px, 1px) rotate(-1deg); }
-    80% { transform: translate(-1px, -1px) rotate(1deg); }
-    90% { transform: translate(1px, 2px) rotate(0deg); }
-    100% { transform: translate(1px, -2px) rotate(-1deg); }
-}
-
-@keyframes shake {
-    0% { transform: translate(1px, 1px) rotate(0deg); }
-    10% { transform: translate(-1px, -2px) rotate(-1deg); }
-    20% { transform: translate(-3px, 0px) rotate(1deg); }
-    30% { transform: translate(3px, 2px) rotate(0deg); }
-    40% { transform: translate(1px, -1px) rotate(1deg); }
-    50% { transform: translate(-1px, 2px) rotate(-1deg); }
-    60% { transform: translate(-3px, 1px) rotate(0deg); }
-    70% { transform: translate(3px, 1px) rotate(-1deg); }
-    80% { transform: translate(-1px, -1px) rotate(1deg); }
-    90% { transform: translate(1px, 2px) rotate(0deg); }
-    100% { transform: translate(1px, -2px) rotate(-1deg); }
-}
-
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
-}
-
-/* Container and Grid Styles */
-.container {
+  }
+  
+  .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     background-color: #f9f9f9;
-}
-
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+  
+  .products-container {
+    display: flex;
+    flex-wrap: wrap;
     gap: 20px;
-}
-
-/* Modal Styles */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
     justify-content: center;
+  }
+  
+  .product-card {
+    width: 300px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+  
+  .pulse-hover:hover {
+    animation: pulse 0.5s ease;
+    box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+    transform: translateY(-5px);
+  }
+  
+  .product-header {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    z-index: 1000;
-    backdrop-filter: blur(5px);
-    animation: fadeIn 0.3s ease;
-}
-
-.modal-content {
-    background: white;
-    padding: 30px;
-    border-radius: 15px;
-    width: 100%;
-    max-width: 500px;
-    position: relative;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    animation: fadeIn 0.3s ease;
-}
-
-.fade-out {
-    animation: fadeOut 0.3s ease;
-}
-
-.modal-close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    font-size: 1.5em;
-    cursor: pointer;
-    color: #dc3;
-}
-
-.modal-close:hover {
-    color: #ff0000;
-}
-
-/* Pincode Input Styles */
-.pincode-input-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.pincode-input-container input {
-    flex-grow: 1;
-    padding-right: 30px;
-}
-
-.pincode-validation-icon {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.pincode-validation-icon.success {
-    color: #28a745;
-}
-
-.pincode-validation-icon.error {
-    color: #dc3545;
-}
-
-.pincode-error {
-    color: #dc3545;
-    font-size: 0.8em;
-    margin-top: 5px;
-}
-
-/* Modal Form Styles */
-.modal-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.quantity-input {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .product-header h3 {
     display: flex;
     align-items: center;
     gap: 10px;
-}
-
-.quantity-input input {
-    width: 50px;
-    text-align: center;
-    padding: 5px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.total-amount {
-    text-align: right;
+    margin: 0;
+    font-size: 1.2em;
+    color: #333;
+  }
+  
+  .title-icon {
+    color: #007bff;
+  }
+  
+  .price-icon {
+    color: #28a745;
+    margin-right: 5px;
+  }
+  
+  .product-price {
+    display: flex;
+    align-items: center;
     font-weight: bold;
     color: #28a745;
-}
-
-.modal-actions {
+  }
+  
+  .product-details {
+    padding: 15px;
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
     gap: 10px;
-    margin-top: 20px;
-}
-
-.cancel-button {
-    background-color: #f0f0f0;
     color: #333;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.cancel-button:hover {
-    background-color: #e0e0e0;
-}
-
-.confirm-button {
+  }
+  
+  .product-details p {
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    padding: 8px 0;
+    border-bottom: 1px solid #f1f1f1;
+  }
+  
+  .product-details p:last-child {
+    border-bottom: none;
+  }
+  
+  .product-details p span:first-child {
+    color: #666;
+    font-weight: 500;
+  }
+  
+  .product-details p span:last-child {
+    font-weight: bold;
+    color: #007bff;
+  }
+  
+  .product-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e0e0e0;
+  }
+  
+  .cart-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .cart-control button {
     background-color: #007bff;
     color: white;
     border: none;
-    padding: 10px 15px;
     border-radius: 5px;
+    padding: 5px 10px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-}
-
-.confirm-button:hover {
-    background-color: #0056b3;
-}
-
-/* Message and Loading Styles */
-.error-message {
+  }
+  
+  .cart-control button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+  }
+  
+  .order-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .order-button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+  }
+  
+  .loading-indicator {
+    text-align: center;
+    padding: 30px;
+    font-size: 1.5em;
+    color: #007bff;
+    animation: shimmer 2s linear infinite;
+  }
+  
+  .no-products {
+    text-align: center;
+    color: #666;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .no-products .empty-icon {
+    font-size: 3em;
+    color: #6c757d;
+  }
+  
+  .error-message {
     background-color: #dc3545;
     color: white;
     padding: 15px;
@@ -218,34 +177,27 @@
     margin-bottom: 20px;
     text-align: center;
     animation: shake 0.5s;
-}
-
-.success-message {
-    background-color: #28a745;
-    color: white;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    text-align: center;
-    animation: bounce 0.5s;
-}
-
-.loading-indicator {
-    text-align: center;
-    padding: 30px;
-    font-size: 1.5em;
-    color: #007bff;
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+  
+  @keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    /* ... rest of the shake animation ... */
+  }
+  
+  @keyframes shimmer {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+  }
+  
+  @media (max-width: 768px) {
+    .products-container {
+      flex-direction: column;
+      align-items: center;
     }
-
-    .modal-content {
-        width: 90%;
-        margin: 0 5%;
-        padding: 20px;
+    
+    .product-card {
+      width: 100%;
     }
-}
+  }
