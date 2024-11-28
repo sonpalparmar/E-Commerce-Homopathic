@@ -117,7 +117,12 @@
     gap: 10px;
     margin-bottom: 10px;
   }
-  
+/* .order-actions:hover .accept{
+  background-color: #3498db;
+} */
+.order-actions:hover .reject{
+  background-color: #3498db;
+}
   .action-button {
     flex: 1;
     padding: 10px;
